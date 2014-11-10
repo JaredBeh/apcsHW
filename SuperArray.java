@@ -83,3 +83,5 @@ public class SuperArray{
 	Object x=theArray[index];
 	theArray[index]=o;
 	return x;
+    }
+}
