@@ -47,8 +47,8 @@ public class SuperArray{
 	    }
 	}
 	if (!isRoom){
-	    resize(theArray.length+1);
-	    theArray[theArray.length-1]=e;
+	    resize(theArray.length*2);
+	    theArray[theArray.length/2]=e;
 	}
     }
     public void clear(){
@@ -60,8 +60,11 @@ public class SuperArray{
 	if (index<theArray.length&&index>=0){
 	    return theArray[index];
 	}
-	System.out.println("Index out of range.");
-	return null;
+	else{
+	    System.out.println("Index out of range.");
+	    throw new IndexOutOfBoundsException();
+	    
+	}
     }
     public void add(int index,Object o){
 	if (index<theArray.length){
@@ -78,10 +81,26 @@ public class SuperArray{
     public Object set(int index, Object o){
 	if (index<0||index>=theArray.length){
 	    System.out.println("Index out of range.");
-	    return null;
+	    throw new IndexOutOfBoundsException();
+	    //return null;
 	}
 	Object x=theArray[index];
 	theArray[index]=o;
 	return x;
+    }
+    public Object remove(int index){
+	if (index<theArray.length&&index>=0){
+	    Object ans=theArray[index];
+	    for (int i=index;i<theArray.length-1;i++){
+		theArray[i]=theArray[i+1];
+	    }
+	    theArray[theArray.length-1]=null;
+	    return ans;
+	}
+	else{
+	    System.out.println("Error");
+	    throw new IndexOutOfBoundsException();
+	    
+	}
     }
 }
