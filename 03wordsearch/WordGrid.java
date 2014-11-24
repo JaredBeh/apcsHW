@@ -23,6 +23,22 @@ public class WordGrid{
 	}
 	return ans;
     }
+    public String reverseString(String s){
+	String ans="";
+	for (int i=s.length()-1;i>=0;i--){
+	    ans+=s.charAt(i);
+	}
+	return ans;
+    }
+    public boolean addWordUpLeft(String word,int row,int col){
+	return addWordDownRight(reverseString(word),1+row-word.length(),1+col-word.length());
+    }
+    public boolean addWordUp(String word,int row,int col){
+	return addWordVertical(reverseString(word),1+row-word.length(),col);
+    }
+    public boolean addWordBackwards(String word,int row,int col){
+	return addWordHorizontal(reverseString(word),row,1+col-word.length());
+    }
     public boolean addWordHorizontal(String word,int row,int col){
 	boolean ans=!(word.length()==0) &&
 	    row>=0 &&
@@ -69,6 +85,32 @@ public class WordGrid{
 	return ans;
 	    
     }
+    public boolean addWordDownRight(String word,int row,int col){
+	boolean ans=!(word.length()==0) &&
+	    row>=0 &&
+	    col>=0 &&
+	    cols>=(col+word.length()) &&
+	    rows>=(row+word.length());
+	if (!ans){
+	    return false;
+	}
+	int col2=col;
+	for (int i=row;i<row+word.length();i++){
+	    if (data[i][col2]==(' ') || data[i][col2]==word.charAt(i-row)){
+		col2++;
+		continue;
+	    }
+	    else{
+		return false;
+	    }
+	}
+	for (int i=row;i<row+word.length();i++){
+	    data[i][col]=word.charAt(i-row);
+	    col++;
+	}
+	return ans;
+	    
+    }
     public static void main(String args[]){
 	WordGrid a = new WordGrid(4,4);
 	a.data[0][0]='a';
@@ -79,10 +121,10 @@ public class WordGrid{
 	a.clear();
 	System.out.println(a);
 	a.addWordHorizontal("Sup",0,1);
-	//System.out.println(a);
-	System.out.println(a.addWordHorizontal("dac",2,1));
 	System.out.println(a);
-	a.addWordHorizontal("dlc",1,1);
+	System.out.println(a.addWordUpLeft("dac",3,3));
+	System.out.println(a);
+	/*a.addWordHorizontal("dlc",1,1);
 	a.addWordHorizontal("sho",1,0);
 	System.out.println(a);
 	a.clear();
@@ -95,6 +137,6 @@ public class WordGrid{
 	if (a.addWordVertical("test",0,3)){
 	    System.out.println("worked");
 	}
-	System.out.println(a);
+	System.out.println(a);*/
     }
 }
