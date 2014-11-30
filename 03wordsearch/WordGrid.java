@@ -2,18 +2,24 @@ import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 public class WordGrid{
+    Random rnd;
     private char[][]data;
-    private ArrayList<String> theWords=new ArrayList<String>(30);
+    private ArrayList<String> theWords=new ArrayList<String>(100);
     public int rows,cols;
     public WordGrid(int numrows,int numcols){
 	data=new char[numrows][numcols];
 	rows=numrows;
 	cols=numcols;
+	rnd=new Random();
     }
-    private void clear(){
+    public WordGrid(int numrows,int numcols,int newseed){
+	this();
+	rnd.setSeed(newseed);
+    }
+    public void clear(){
 	for (int i=0;i<rows;i++){
 	    for (int k=0;k<cols;k++){
-		data[i][k]=' ';
+		data[i][k]='-';
 	    }
 	}
     }
@@ -34,6 +40,14 @@ public class WordGrid{
 	}
 	return ans;
     }
+    public boolean tryAdd(String word){
+	for (int n=0;n<50;n++){
+	    if (add(word,rnd.nextInt(rows),rnd.nextInt(cols),rnd.nextInt(2),rnd.nextInt(2))){
+		return true;
+	    }
+	}
+	return false;
+    }
     public boolean add(String word,int row,int col,int dx,int dy){
 	System.out.println(row+(dy*word.length()));
 	boolean ans=!(word.length()==0) &&
@@ -50,7 +64,7 @@ public class WordGrid{
 	int col2=col;
 	for (int i=0;i<word.length();i++){
 	    if (!(data[row+(dy*i)][col2]==(word.charAt(i))) &&
-		(data[row+(dy*i)][col2]!=' ')){
+		(data[row+(dy*i)][col2]!='-')){
 		data=data2;
 		return false;
 	    }
@@ -62,16 +76,12 @@ public class WordGrid{
     public void wordBankReader() throws FileNotFoundException {
 	File text=new File("wordbank.txt");
 	Scanner scnr = new Scanner(text);
+	String currentWord="";
 	while (scnr.hasNextLine()){
-	    if (!(theWords.add(scnr.nextLine()))){
-		break;
+	    currentWord=scnr.nextLine();
+	    if (tryAdd(currentWord)){
+		theWords.add(currentWord);
 	    }
 	}
-    }
-    public static void main(String args[]){
-	WordGrid a = new WordGrid(10,10);
-	a.clear();
-        System.out.println(a.add("test",2,5,-1,0));
-	System.out.println(a);
     }
 }
