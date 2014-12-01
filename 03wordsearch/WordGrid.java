@@ -1,6 +1,5 @@
 import java.util.*;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 public class WordGrid{
     Random rnd;
     private char[][]data;
@@ -13,8 +12,15 @@ public class WordGrid{
 	rnd=new Random();
     }
     public WordGrid(int numrows,int numcols,int newseed){
-	this();
+	this(numrows,numcols);
 	rnd.setSeed(newseed);
+    }
+    public String wordsInPuzzle(){
+	String ans="";
+	for (int i=0;i<theWords.size();i++){
+	    ans+=theWords.get(i)+" ";
+	}
+	return ans;
     }
     public void clear(){
 	for (int i=0;i<rows;i++){
@@ -63,25 +69,28 @@ public class WordGrid{
 	char[][]data2=data;
 	int col2=col;
 	for (int i=0;i<word.length();i++){
-	    if (!(data[row+(dy*i)][col2]==(word.charAt(i))) &&
-		(data[row+(dy*i)][col2]!='-')){
+	    if (!(data[row+(dy*i)][col2+(dx*i)]==(word.charAt(i))) &&
+		(data[row+(dy*i)][col2+(dx*i)]!='-')){
 		data=data2;
 		return false;
 	    }
-	    data[row+dy*i][col2]=word.charAt(i);
-	    col2=col2+dx;
+	    data[row+dy*i][col2+dx*i]=word.charAt(i);
 	}
 	return true;
     }
-    public void wordBankReader() throws FileNotFoundException {
-	File text=new File("wordbank.txt");
-	Scanner scnr = new Scanner(text);
-	String currentWord="";
-	while (scnr.hasNextLine()){
-	    currentWord=scnr.nextLine();
-	    if (tryAdd(currentWord)){
-		theWords.add(currentWord);
+    public void wordBankReader(){
+	try{
+	    File file = new File("wordbank.txt");
+	    Scanner scnr = new Scanner(file);
+	    String currentWord="";
+	    while (scnr.hasNextLine()){
+		currentWord=scnr.nextLine();
+		if (tryAdd(currentWord)){
+		    theWords.add(currentWord);
+		}
 	    }
+	}catch(FileNotFoundException e){
+	    System.out.println("File not found.");
 	}
     }
 }
