@@ -3,7 +3,7 @@ import java.io.*;
 public class WordGrid{
     Random rnd;
     private char[][]data;
-    private ArrayList<String> theWords=new ArrayList<String>(100);
+    public String theWords="";
     public int rows,cols;
     public WordGrid(int numrows,int numcols){
 	data=new char[numrows][numcols];
@@ -16,11 +16,12 @@ public class WordGrid{
 	rnd.setSeed(newseed);
     }
     public String wordsInPuzzle(){
-	String ans="";
+	/*String ans="";
 	for (int i=0;i<theWords.size();i++){
 	    ans+=theWords.get(i)+" ";
 	}
-	return ans;
+	return ans;*/
+	return theWords;
     }
     public void clear(){
 	for (int i=0;i<rows;i++){
@@ -55,25 +56,25 @@ public class WordGrid{
 	return false;
     }
     public boolean add(String word,int row,int col,int dx,int dy){
-	System.out.println(row+(dy*word.length()));
 	boolean ans=!(word.length()==0) &&
 	    row>=0 &&
 	    col>=0 &&
 	    (dx==1||dx==0||dx==-1) &&
 	    (dy==1||dy==0||dy==-1) &&
-	    (cols>=col+(dx*word.length())||0<=col+(dx*word.length())) &&
-	    (rows>=(row+(dy*word.length()))||0<=row+(dy*word.length()));
+	    !(dy==0&&dx==0) &&
+	    (cols>=col+(dx*word.length())&&0<=col+(dx*word.length())) &&
+	    (rows>=(row+(dy*word.length()))&&0<=row+(dy*word.length()));
 	if (!ans){
 	    return false;
 	}
-	char[][]data2=data;
 	int col2=col;
 	for (int i=0;i<word.length();i++){
 	    if (!(data[row+(dy*i)][col2+(dx*i)]==(word.charAt(i))) &&
 		(data[row+(dy*i)][col2+(dx*i)]!='-')){
-		data=data2;
 		return false;
 	    }
+	}
+	for (int i=0;i<word.length();i++){
 	    data[row+dy*i][col2+dx*i]=word.charAt(i);
 	}
 	return true;
@@ -86,7 +87,8 @@ public class WordGrid{
 	    while (scnr.hasNextLine()){
 		currentWord=scnr.nextLine();
 		if (tryAdd(currentWord)){
-		    theWords.add(currentWord);
+		    System.out.println("OK");
+		    theWords+=currentWord+" ";
 		}
 	    }
 	}catch(FileNotFoundException e){
