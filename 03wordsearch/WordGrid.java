@@ -2,26 +2,33 @@ import java.util.*;
 import java.io.*;
 public class WordGrid{
     Random rnd;
+    public boolean fillSpaces=true;
     private char[][]data;
     public String theWords="";
     public int rows,cols;
     public WordGrid(int numrows,int numcols){
+	this(numrows,numcols,0);
+	Random rnd2=new Random();
+	rnd=rnd2;
+    }
+    public WordGrid(int numrows,int numcols,int newseed,int toFill){
 	data=new char[numrows][numcols];
 	rows=numrows;
 	cols=numcols;
-	rnd=new Random();
+	rnd=new Random(newseed);
+	clear();
+	if (toFill==1){
+	    fillSpaces=false;
+	}
+    }
+    public WordGrid(){
+	this(8,8);
     }
     public WordGrid(int numrows,int numcols,int newseed){
-	this(numrows,numcols);
-	rnd.setSeed(newseed);
+	this(numrows,numcols,newseed,0);
     }
     public String wordsInPuzzle(){
-	/*String ans="";
-	for (int i=0;i<theWords.size();i++){
-	    ans+=theWords.get(i)+" ";
-	}
-	return ans;*/
-	return theWords;
+	return "Find these words\n"+theWords+"\n";
     }
     public void clear(){
 	for (int i=0;i<rows;i++){
@@ -87,12 +94,20 @@ public class WordGrid{
 	    while (scnr.hasNextLine()){
 		currentWord=scnr.nextLine();
 		if (tryAdd(currentWord)){
-		    System.out.println("OK");
 		    theWords+=currentWord+" ";
 		}
 	    }
 	}catch(FileNotFoundException e){
 	    System.out.println("File not found.");
+	}
+	if (fillSpaces){
+	    for (int i=0;i<data.length;i++){
+		for (int n=0;n<data[0].length;n++){
+		    if (data[i][n]=='-'){
+			data[i][n]=(char)(97+rnd.nextInt(26));
+		    }
+		}
+	    }
 	}
     }
 }
