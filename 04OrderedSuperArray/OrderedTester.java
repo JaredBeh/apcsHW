@@ -6,6 +6,7 @@ public class OrderedTester{
 	a.set(2,"aa");
 	System.out.println(a);
 	String[]b={"a","e","d","c"};
-	System.out.println(a.mySort(b));
+	a.resize(11);
+	System.out.println(a.find("d"));
     }
 }

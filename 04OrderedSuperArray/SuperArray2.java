@@ -14,6 +14,14 @@ public class SuperArray2{
 	}
 	return ans+"]";
     }
+    public int find(String target){
+	for (int x=0;x<theArray.length;x++){
+	    if (theArray[x]==target){
+		return x;
+	    }
+	}
+	return -1;
+    }
     public void insertionSort(){
 	for (int i=0;i<theArray.length-1;i++){
 	    if (theArray[i]!=null && theArray[i+1]!=null && theArray[i].compareTo(theArray[i+1])>0){

@@ -14,6 +14,27 @@ public class OrderedSuperArray{
 	}
 	return ans+"]";
     }
+    public int find(String target){
+	int i=theArray.length/2;
+	int[]testedValues=new int[theArray.length];
+	int ans=-1;
+	while (true){
+	    if (theArray[i].compareTo(target)==0){
+		ans=i;
+		i--;
+	    }
+	    else if (theArray[i].compareTo(target)>0){
+		i=i/2;
+	    }
+	    else if (Integer.indexOf(testedValues,i)!=-1){
+		break;
+	    }
+	    else{
+		i=i*1.5;
+	    }
+	}
+	return ans;
+    }
     public void resize (int newCapacity){
 	String[] newArray = new String[newCapacity];
 	if (newCapacity>=theArray.length){

@@ -10,6 +10,7 @@ public class SuperTester{
 	a.add("a");
 	a.resize(4);
 	a.insertionSort();
+	System.out.println(a.find("c"));
 	System.out.println(a);
     }
 }
