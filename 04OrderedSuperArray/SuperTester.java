@@ -9,7 +9,7 @@ public class SuperTester{
 	System.out.println(a);
 	a.add("a");
 	a.resize(4);
-	a.insertionSort();
+	a.selectionSort();
 	System.out.println(a.find("c"));
 	System.out.println(a);
     }

@@ -22,7 +22,23 @@ public class SuperArray2{
 	}
 	return -1;
     }
-    public void insertionSort(){
+    public void selectionSort(){
+	for (int n=0;n<size();n++){
+	    String a=theArray[n];
+	    int index=0;
+	    for (int i=n;i<size();i++){
+		if (theArray[i].compareTo(a)<0){
+		    a=theArray[i];
+		    index=i;
+		}
+	    }
+	    toString();
+	    theArray[index]=theArray[n];
+	    theArray[n]=a;
+	    toString();
+	}
+    }
+	public void insertionSort(){
 	for (int i=0;i<theArray.length-1;i++){
 	    if (theArray[i]!=null && theArray[i+1]!=null && theArray[i].compareTo(theArray[i+1])>0){
 		String a=theArray[i+1];
