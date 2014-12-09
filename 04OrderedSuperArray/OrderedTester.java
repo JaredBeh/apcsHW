@@ -1,12 +1,13 @@
 public class OrderedTester{
     public static void main(String[]args){
-	OrderedSuperArray a = new OrderedSuperArray(4);
+	OrderedSuperArray a = new OrderedSuperArray(8);
 	a.add("ball");
 	a.add("all");
-	a.set(2,"aa");
+	a.add("d");
+	a.add("aab");
 	System.out.println(a);
-	String[]b={"a","e","d","c"};
-	a.resize(11);
+	a.resize(5);
 	System.out.println(a.find("d"));
+	System.out.println(a);
     }
 }

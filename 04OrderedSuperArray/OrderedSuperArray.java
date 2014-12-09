@@ -1,94 +1,76 @@
-public class OrderedSuperArray{
-    public String[] theArray;
-    public int elementCounter;
+public class OrderedSuperArray extends SuperArray{
     public OrderedSuperArray(){
-	theArray=new String[10];
+	this(10);
     }
     public OrderedSuperArray(int x){
-	theArray=new String[x];
+	data=new String[x];
+	size=0;
     }
     public String toString(){
 	String ans="[ ";
-	for (int i=0;i<theArray.length;i++){
-	    ans+=theArray[i]+" ";
+	for (int i=0;i<size;i++){
+	    ans+=data[i]+" ";
 	}
 	return ans+"]";
     }
     public int find(String target){
-	int i=theArray.length/2;
-	int[]testedValues=new int[theArray.length];
-	int ans=-1;
-	while (true){
-	    if (theArray[i].compareTo(target)==0){
-		ans=i;
-		i--;
-	    }
-	    else if (theArray[i].compareTo(target)>0){
-		i=i/2;
-	    }
-	    else if (Integer.indexOf(testedValues,i)!=-1){
-		break;
+	int min=0;
+	int max=size-1;
+	int spot=(min+max)/2;
+	while (data[spot]!=target&&min<=max){
+	    if (data[spot].compareTo(target)>0){
+		max=spot-1;
 	    }
 	    else{
-		i=i*1.5;
+		min=spot+1;
 	    }
+	    spot=(min+max)/2;
 	}
-	return ans;
+	if (min<=max){
+	    return spot;
+	}
+	else{
+	    return -1;
+	}
     }
     public void resize (int newCapacity){
 	String[] newArray = new String[newCapacity];
-	if (newCapacity>=theArray.length){
-	    for (int i=0;i<theArray.length;i++){
-		newArray[i]=theArray[i];
+	if (newCapacity>=data.length){
+	    for (int i=0;i<data.length;i++){
+		newArray[i]=data[i];
 	    }
 	}
 	else{
 	    for (int i=0;i<newCapacity;i++){
-		newArray[i]=theArray[i];
+		newArray[i]=data[i];
 	    }
 	}
-	theArray=newArray;
+	data=newArray;
     }
     public int size(){
 	int ans=0;
-	for (int i=0;i<theArray.length;i++){
-	    if (theArray[i]!=null){
+	for (int i=0;i<data.length;i++){
+	    if (data[i]!=null){
 		ans++;
 	    }
 	}
 	return ans;
     }
     public void add(String e){
-	boolean isRoom=(theArray.length==size());
-	if (!isRoom){
-	    resize(theArray.length*2);
+        int index=size();
+	while (index>0&&get(index-1).compareTo(e)>0){
+	    index--;
 	}
-	boolean worked=false;
-	for (int i=0;i<size();i++){
-	    if (e.compareTo(theArray[i])>0){
-		for (int n=size()-1;n>=i;n--){
-		    theArray[n+1]=theArray[n];
-		}
-		theArray[i]=e;
-		worked=true;
-		break;
-	    }
-	}
-	if (!worked){
-	    for (int n=size()-1;n>=0;n--){
-		theArray[n+1]=theArray[n];
-	    }
-	    theArray[0]=e;
-	}
+	super.add(index,e);
     }
     public void clear(){
-	for (int i=0;i<theArray.length;i++){
-	    theArray[i]=null;
+	for (int i=0;i<data.length;i++){
+	    data[i]=null;
 	}
     }
     public String get(int index){
-	if (index<theArray.length&&index>=0){
-	    return theArray[index];
+	if (index<data.length&&index>=0){
+	    return data[index];
 	}
 	else{
 	    System.out.println("Index out of range.");
@@ -100,27 +82,12 @@ public class OrderedSuperArray{
 	add(o);
     }
     public String set(int index, String o){
-	if (index<0||index>=theArray.length){
+	if (index<0||index>=data.length){
 	    System.out.println("Index out of range.");
 	    throw new IndexOutOfBoundsException();
 	}
-	String a=theArray[index];
+	String a=data[index];
 	add(o);
 	return remove(index);
-    }
-    public String remove(int index){
-	if (index<theArray.length&&index>=0){
-	    String ans=theArray[index];
-	    for (int i=index;i<theArray.length-1;i++){
-		theArray[i]=theArray[i+1];
-	    }
-	    theArray[theArray.length-1]=null;
-	    return ans;
-	}
-	else{
-	    System.out.println("Error");
-	    throw new IndexOutOfBoundsException();
-	    
-	}
     }
 }
